@@ -1,5 +1,7 @@
 package pojos;
 
+import java.util.Date;
+
 import com.google.gson.annotations.Expose;
 
 public class PullRequest {
@@ -11,9 +13,9 @@ public class PullRequest {
 	@Expose
 	private Integer number;
 	@Expose
-	private String createdAt;
+	private Date createdAt;
 	@Expose
-	private Object mergedAt;
+	private Date mergedAt;
 
 	public User getAuthor() {
 		return author;
@@ -39,19 +41,19 @@ public class PullRequest {
 		this.number = number;
 	}
 
-	public String getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Object getMergedAt() {
+	public Date getMergedAt() {
 		return mergedAt;
 	}
 
-	public void setMergedAt(Object mergedAt) {
+	public void setMergedAt(Date mergedAt) {
 		this.mergedAt = mergedAt;
 	}
 }

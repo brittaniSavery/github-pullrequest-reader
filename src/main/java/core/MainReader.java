@@ -1,7 +1,11 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -25,7 +29,7 @@ import pojos.ResponseError;
 
 public class MainReader {
 
-	static final String ACCESS_TOKEN = /*TODO: insert OAuth token*/;
+	static final String ACCESS_TOKEN = ""; //TODO: Add access token
 	static final String ORGANIZATION = "lodash";
 	static final int NUM_OF_REPOS = 5;
 
@@ -57,9 +61,30 @@ public class MainReader {
 		List<RepositoryNode> repos = reposResponseContainer.getData().getOrganization().getRepositories().getNodes();
 		
 		List<PullRequest> totalPullRequests = new ArrayList<>();
+		Calendar cal = new GregorianCalendar();
+		cal.setFirstDayOfWeek(Calendar.FRIDAY);
+		cal.setMinimalDaysInFirstWeek(7);
+		Map<String,Integer> prsPerWeek = new HashMap<String,Integer>();
 
 		for (RepositoryNode repo : repos) {
 			storeAllPullRequestsByRepo(invocationBuilder, totalPullRequests, repo, null);
+		}
+		
+		for(PullRequest pr : totalPullRequests)
+		{
+			if(pr.getMergedAt() == null)
+				continue;
+				
+			cal.setTime(pr.getMergedAt());
+			String key = cal.get(Calendar.YEAR)+"-"+cal.get(Calendar.WEEK_OF_YEAR);
+			
+			if(prsPerWeek.containsKey(key))
+			{
+				int mergedNums = prsPerWeek.get(key).intValue();
+				prsPerWeek.put(key,++mergedNums);
+			}
+			else
+				prsPerWeek.put(key,1);
 		}
 		
 		System.out.println("The number of pull requests in the lodash organization is "+totalPullRequests.size());
@@ -100,7 +125,8 @@ public class MainReader {
 		
 		//Storing all pull requests
 		for (PullRequestContainer prContainer : pullRequests.getEdges()) {
-			totalPullRequests.add(prContainer.getNode());
+			PullRequest pullrequest = prContainer.getNode();
+			totalPullRequests.add(pullrequest);
 		}
 		
 		//Checking to see if pagination is needed to get all pull requests 
