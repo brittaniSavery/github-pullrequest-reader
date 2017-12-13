@@ -61,6 +61,8 @@ public class MainReader {
 		List<RepositoryNode> repos = reposResponseContainer.getData().getOrganization().getRepositories().getNodes();
 		
 		List<PullRequest> totalPullRequests = new ArrayList<>();
+
+		//Creating a new calendar to keep count of weeks (in per week)
 		Calendar cal = new GregorianCalendar();
 		cal.setFirstDayOfWeek(Calendar.FRIDAY);
 		cal.setMinimalDaysInFirstWeek(7);
