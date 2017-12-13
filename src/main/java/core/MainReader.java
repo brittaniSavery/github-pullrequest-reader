@@ -29,7 +29,7 @@ import pojos.ResponseError;
 
 public class MainReader {
 
-	static final String ACCESS_TOKEN = ""; //TODO: Add access token
+	static final String ACCESS_TOKEN = ""; //TODO: insert OAuth token
 	static final String ORGANIZATION = "lodash";
 	static final int NUM_OF_REPOS = 5;
 
@@ -70,6 +70,7 @@ public class MainReader {
 			storeAllPullRequestsByRepo(invocationBuilder, totalPullRequests, repo, null);
 		}
 		
+		//Getting pullrequest per week
 		for(PullRequest pr : totalPullRequests)
 		{
 			if(pr.getMergedAt() == null)
